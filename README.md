@@ -89,6 +89,9 @@ Default model: `jinaai/jina-embeddings-v2-base-code` (768 dim, 307MB). Tum model
 | [`codesage/codesage-small`](https://huggingface.co/codesage/codesage-small) | 130M | ~250MB | 1024 | Kod-spesifik, MLM + contrastive training. |
 | [`codesage/codesage-base`](https://huggingface.co/codesage/codesage-base) | 356M | ~680MB | 1024 | Daha iyi kalite ama daha agir. |
 | [`BAAI/bge-small-en-v1.5`](https://huggingface.co/BAAI/bge-small-en-v1.5) | 33M | ~130MB | 384 | Cok hafif, iyi genel performans. |
+| [`google/embeddinggemma-300m`](https://huggingface.co/google/embeddinggemma-300m) | 308M | <200MB* | 768 | MTEB 500M alti en iyi. Matryoshka, 100+ dil, code+docs egitimi. 2K context. |
+
+\* quantize ile
 
 ### Ollama (Lokal)
 
@@ -101,6 +104,7 @@ Default model: `jinaai/jina-embeddings-v2-base-code` (768 dim, 307MB). Tum model
 
 - **Hiz oncelikliyse**: `all-MiniLM-L6-v2` veya `bge-small-en-v1.5`
 - **Kod arama kalitesi oncelikliyse**: `jina-embeddings-v2-base-code` (default) veya `codesage-small`
+- **En iyi genel benchmark + dusuk RAM**: `embeddinggemma-300m` (quantize ile <200MB, ama 2K context limiti var)
 - **Genel amacli + esnek dim**: `nomic-embed-text-v1.5`
 
 Model degistirmek icin `.code-search.toml`:
