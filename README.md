@@ -1,30 +1,30 @@
 # mcp-code-search
 
-Local semantic code search MCP server. LanceDB + sentence-transformers + Tree-sitter ile AST-aware chunking ve hybrid search.
+Local semantic code search MCP server. AST-aware chunking with Tree-sitter, hybrid search via LanceDB + sentence-transformers.
 
-## Ozellikler
+## Features
 
-- Tree-sitter ile AST-aware kod chunking (function, class, method, module)
+- Tree-sitter AST-aware code chunking (function, class, method, module)
 - Hybrid search: vector similarity + full-text keyword (RRF merge)
-- Incremental indexing (sadece degisen dosyalari yeniden indexle)
-- 20+ programlama dili destegi
-- Tamamen lokal, internet gerektirmez
+- Incremental indexing (only re-indexes changed files)
+- 20+ programming language support
+- Fully local, no internet required
 
-## Kurulum
+## Installation
 
 ```bash
 uv pip install -e .
 ```
 
-Ollama destegi icin:
+With Ollama support:
 
 ```bash
 uv pip install -e ".[ollama]"
 ```
 
-## MCP Yapilandirmasi
+## MCP Configuration
 
-`claude_desktop_config.json` veya MCP client config'ine ekle:
+Add to `claude_desktop_config.json` or your MCP client config:
 
 ```json
 {
@@ -37,24 +37,24 @@ uv pip install -e ".[ollama]"
 }
 ```
 
-## Araclar
+## Tools
 
-| Arac | Aciklama |
-|------|----------|
-| `index_directory` | Dizini indexle (Tree-sitter AST parsing) |
-| `search_code` | Hybrid semantic + keyword arama |
-| `search_text` | Full-text keyword arama (grep alternatifi) |
-| `find_similar_code` | Benzer kod parcalari bul |
-| `get_index_status` | Index istatistiklerini gor |
-| `list_projects` | Indexlenmis projeleri listele |
+| Tool | Description |
+|------|-------------|
+| `index_directory` | Index a directory (Tree-sitter AST parsing) |
+| `search_code` | Hybrid semantic + keyword search |
+| `search_text` | Full-text keyword search (grep alternative) |
+| `find_similar_code` | Find similar code snippets |
+| `get_index_status` | View index statistics |
+| `list_projects` | List indexed projects |
 
-## Yapilandirma
+## Configuration
 
-Proje kokune `.code-search.toml` veya global `~/.config/mcp-code-search/config.toml` ile:
+Project-level `.code-search.toml` or global `~/.config/mcp-code-search/config.toml`:
 
 ```toml
 [embedding]
-provider = "sentence-transformers"  # veya "ollama"
+provider = "sentence-transformers"  # or "ollama"
 model = "jinaai/jina-embeddings-v2-base-code"
 
 [embedding.ollama]
@@ -75,53 +75,53 @@ snippet_max_lines = 30
 base_path = "~/.local/share/mcp-code-search"
 ```
 
-## Embedding Modelleri
+## Embedding Models
 
-Default model: `jinaai/jina-embeddings-v2-base-code` (768 dim, 307MB). Tum modeller MacBook Air M2 8GB'da rahat calisir.
+Default model: `jinaai/jina-embeddings-v2-base-code` (768 dim, 307MB). All models run comfortably on MacBook Air M2 8GB.
 
-### sentence-transformers (Lokal)
+### sentence-transformers (Local)
 
-| Model | Param | Boyut | Dim | Ozellik |
-|-------|-------|-------|-----|---------|
-| [`all-MiniLM-L6-v2`](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) | 22M | ~80MB | 384 | En hafif, en hizli. Genel amacli. |
-| [`jinaai/jina-embeddings-v2-base-code`](https://huggingface.co/jinaai/jina-embeddings-v2-base-code) | 161M | ~307MB | 768 | Kod-spesifik, 30 dil, 8K token context. **Default.** |
-| [`nomic-ai/nomic-embed-text-v1.5`](https://huggingface.co/nomic-ai/nomic-embed-text-v1.5) | 137M | ~262MB | 768 | Matryoshka (dim kisilabiir), acik lisans. |
-| [`codesage/codesage-small`](https://huggingface.co/codesage/codesage-small) | 130M | ~250MB | 1024 | Kod-spesifik, MLM + contrastive training. |
-| [`codesage/codesage-base`](https://huggingface.co/codesage/codesage-base) | 356M | ~680MB | 1024 | Daha iyi kalite ama daha agir. |
-| [`BAAI/bge-small-en-v1.5`](https://huggingface.co/BAAI/bge-small-en-v1.5) | 33M | ~130MB | 384 | Cok hafif, iyi genel performans. |
-| [`google/embeddinggemma-300m`](https://huggingface.co/google/embeddinggemma-300m) | 308M | <200MB* | 768 | MTEB 500M alti en iyi. Matryoshka, 100+ dil, code+docs egitimi. 2K context. |
+| Model | Params | Size | Dim | Notes |
+|-------|--------|------|-----|-------|
+| [`all-MiniLM-L6-v2`](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2) | 22M | ~80MB | 384 | Lightest, fastest. General purpose. |
+| [`jinaai/jina-embeddings-v2-base-code`](https://huggingface.co/jinaai/jina-embeddings-v2-base-code) | 161M | ~307MB | 768 | Code-specific, 30 languages, 8K token context. **Default.** |
+| [`nomic-ai/nomic-embed-text-v1.5`](https://huggingface.co/nomic-ai/nomic-embed-text-v1.5) | 137M | ~262MB | 768 | Matryoshka (adjustable dim), open license. |
+| [`codesage/codesage-small`](https://huggingface.co/codesage/codesage-small) | 130M | ~250MB | 1024 | Code-specific, MLM + contrastive training. |
+| [`codesage/codesage-base`](https://huggingface.co/codesage/codesage-base) | 356M | ~680MB | 1024 | Better quality but heavier. |
+| [`BAAI/bge-small-en-v1.5`](https://huggingface.co/BAAI/bge-small-en-v1.5) | 33M | ~130MB | 384 | Very lightweight, good general performance. |
+| [`google/embeddinggemma-300m`](https://huggingface.co/google/embeddinggemma-300m) | 308M | <200MB\* | 768 | Best MTEB under 500M. Matryoshka, 100+ languages, code+docs training. 2K context. |
 
-\* quantize ile
+\* with quantization
 
-### Ollama (Lokal)
+### Ollama (Local)
 
-| Model | Boyut | Dim | Ozellik |
-|-------|-------|-----|---------|
-| `nomic-embed-text` | ~274MB | 768 | Varsayilan Ollama modeli. |
-| `mxbai-embed-large` | ~670MB | 1024 | Daha yuksek kalite. |
+| Model | Size | Dim | Notes |
+|-------|------|-----|-------|
+| `nomic-embed-text` | ~274MB | 768 | Default Ollama model. |
+| `mxbai-embed-large` | ~670MB | 1024 | Higher quality. |
 
-### Nasil Secilir
+### How to Choose
 
-- **Hiz oncelikliyse**: `all-MiniLM-L6-v2` veya `bge-small-en-v1.5`
-- **Kod arama kalitesi oncelikliyse**: `jina-embeddings-v2-base-code` (default) veya `codesage-small`
-- **En iyi genel benchmark + dusuk RAM**: `embeddinggemma-300m` (quantize ile <200MB, ama 2K context limiti var)
-- **Genel amacli + esnek dim**: `nomic-embed-text-v1.5`
+- **Speed priority**: `all-MiniLM-L6-v2` or `bge-small-en-v1.5`
+- **Code search quality**: `jina-embeddings-v2-base-code` (default) or `codesage-small`
+- **Best general benchmark + low RAM**: `embeddinggemma-300m` (with quantization <200MB, but 2K context limit)
+- **General purpose + flexible dim**: `nomic-embed-text-v1.5`
 
-Model degistirmek icin `.code-search.toml`:
+To change the model, update `.code-search.toml`:
 
 ```toml
 [embedding]
 model = "all-MiniLM-L6-v2"
 ```
 
-Model degistiginde dimension uyumsuzlugu otomatik algilanir ve full reindex yapilir.
+When the model changes, dimension mismatch is automatically detected and a full reindex is performed.
 
-## Test
+## Testing
 
 ```bash
 uv run pytest tests/ -v
 ```
 
-## Lisans
+## License
 
 MIT
