@@ -9,7 +9,7 @@ from mcp_code_search.config import Config, SearchConfig, _merge_toml
 def test_default_config():
     config = Config()
     assert config.embedding.provider == "sentence-transformers"
-    assert config.embedding.model == "jinaai/jina-embeddings-v2-base-code"
+    assert config.embedding.model == "all-MiniLM-L6-v2"
     assert config.indexing.max_file_size_kb == 500
     assert config.indexing.batch_size == 32
     assert config.indexing.max_chunk_lines == 50
@@ -84,5 +84,5 @@ provider = "ollama"
         _merge_toml(config, Path(f.name))
 
     assert config.embedding.provider == "ollama"
-    assert config.embedding.model == "jinaai/jina-embeddings-v2-base-code"
+    assert config.embedding.model == "all-MiniLM-L6-v2"
     assert config.indexing.batch_size == 32

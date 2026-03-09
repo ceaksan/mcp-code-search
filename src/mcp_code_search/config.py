@@ -43,7 +43,7 @@ PROJECT_CONFIG_NAME = ".code-search.toml"
 @dataclass
 class EmbeddingConfig:
     provider: str = "sentence-transformers"
-    model: str = "jinaai/jina-embeddings-v2-base-code"
+    model: str = "all-MiniLM-L6-v2"
     ollama_model: str = "nomic-embed-text"
     ollama_base_url: str = "http://localhost:11434"
 

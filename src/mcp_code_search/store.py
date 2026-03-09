@@ -41,7 +41,7 @@ def _make_schema(dimension: int) -> pa.Schema:
 class Store:
     """LanceDB storage for code chunks."""
 
-    def __init__(self, config: Config, dimension: int = 768):
+    def __init__(self, config: Config, dimension: int = 384):
         self._config = config
         self._dimension = dimension
         self._schema = _make_schema(dimension)

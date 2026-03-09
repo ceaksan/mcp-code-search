@@ -13,7 +13,7 @@ from mcp_code_search.store import (
 )
 
 
-DIM = 768
+DIM = 384
 
 
 def _make_store(tmp_path: str, dimension: int = DIM) -> Store:

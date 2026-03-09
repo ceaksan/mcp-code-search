@@ -27,7 +27,7 @@ def test_create_embedder_default():
     config = EmbeddingConfig()
     emb = create_embedder(config)
     assert isinstance(emb, SentenceTransformerEmbedder)
-    assert emb._model_name == "jinaai/jina-embeddings-v2-base-code"
+    assert emb._model_name == "all-MiniLM-L6-v2"
 
 
 def test_create_embedder_explicit_model():
